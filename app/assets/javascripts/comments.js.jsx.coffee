@@ -63,10 +63,4 @@ CommentsComponent = React.createClass
 
 
 $ ->
-  comments = [
-    {comment: "hello world!", id: 1},
-    {comment: "hello world222!", id: 2},
-    {comment: "hello world111!", id: 3}
-  ]
-
   React.renderComponent `<CommentsComponent url="/comments.json" />`, document.getElementById('react-comments')
