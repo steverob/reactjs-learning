@@ -4,9 +4,21 @@
 
 ###* @jsx React.DOM ###
 
-Component = React.createClass
+TitleComponent = React.createClass
   render: ->
     `<h1>Hello World from React! :) </h1>`
 
+TimeComponent = React.createClass
+  render: ->
+    `<div class="well">
+      Hi there! <input class="input" name="text" placeholder="Enter some text" />
+      <p>{this.props.time.toTimeString()}</p>
+    </div>`
+
+
 $ ->
-  React.renderComponent(`<Component />`, document.getElementById 'react-output')
+  React.renderComponent `<TitleComponent />`, document.getElementById('react-title')
+
+  setInterval ->
+    React.renderComponent `<TimeComponent time={new Date()} />`, document.getElementById('react-time')
+  , 500
