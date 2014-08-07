@@ -10,10 +10,32 @@ CommentItem = React.createClass
 
 CommentsList = React.createClass
   render: ->
-    commentNodes = this.props.comments.map (comment, index) ->
+    commentNodes = @.props.comments.map (comment, index) ->
       `<CommentItem comment={comment.comment} key={comment.id} />`
 
     `<div className="comments-list">{commentNodes}</div>`
+
+CommentsComponent = React.createClass
+  getInitialState: ->
+    comments: []
+
+  componentDidMount: ->
+    @.loadCommentsFromServer()
+
+  loadCommentsFromServer: ->
+    $.ajax
+      type: "GET" 
+      url: @.props.url
+      dataType: 'json'
+      success: (comments) =>
+        @.setState({comments: comments})
+
+  render: ->
+    `<div>
+      <h3>Comments</h3>
+      <CommentsList comments={this.state.comments} />
+    </div>`
+
 
 $ ->
   comments = [
@@ -22,4 +44,4 @@ $ ->
     {comment: "hello world111!", id: 3}
   ]
 
-  React.renderComponent `<CommentsList comments={comments} />`, document.getElementById('react-comments')
+  React.renderComponent `<CommentsComponent url="/comments.json" />`, document.getElementById('react-comments')
