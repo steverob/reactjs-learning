@@ -10,8 +10,8 @@ TitleComponent = React.createClass
 
 TimeComponent = React.createClass
   render: ->
-    `<div class="well">
-      Hi there! <input class="input" name="text" placeholder="Enter some text" />
+    `<div className="well">
+      Hi there! <input className="input" name="text" placeholder="Enter some text" />
       <p>{this.props.time.toTimeString()}</p>
     </div>`
 
