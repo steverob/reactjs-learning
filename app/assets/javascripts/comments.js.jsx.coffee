@@ -15,6 +15,19 @@ CommentsList = React.createClass
 
     `<div className="comments-list">{commentNodes}</div>`
 
+CommentsForm = React.createClass
+  onSubmit: ->
+    comment = this.refs.comment.getDOMNode().value.trim()
+    this.props.onCommentSubmit({comment: comment})
+    this.refs.comment.getDOMNode().value = "";
+    false
+
+  render: ->
+    `<form className="form form-inline" onSubmit={this.onSubmit}>
+      <input className="input span8" ref="comment" placeholder="Enter comment" />
+      <input type="submit" className="btn btn-primary" />
+    </form>`
+
 CommentsComponent = React.createClass
   getInitialState: ->
     comments: []
@@ -30,10 +43,22 @@ CommentsComponent = React.createClass
       success: (comments) =>
         @.setState({comments: comments})
 
+  handleCommentSubmit: (newComment) ->
+    this.setState({comments: this.state.comments.concat [newComment]})
+    $.ajax
+      type: "POST"
+      url: @.props.url
+      data: {"comment": newComment}
+      success: =>
+        @.loadCommentsFromServer()
+
+
   render: ->
     `<div>
       <h3>Comments</h3>
       <CommentsList comments={this.state.comments} />
+      <br />
+      <CommentsForm onCommentSubmit={this.handleCommentSubmit}/>
     </div>`
 
 
